@@ -4,10 +4,11 @@ use lab9::merkle_hellman_knapsack;
 #[test]
 fn decrypt_word() {
     let message = "word";
-    let (private_key, a, n, public_key) = keys::generate_keys(8);
+    let keys = keys::KeyPair::new(8);
 
-    let encrypted = merkle_hellman_knapsack::encrypt(message, &public_key);
-    let decrypted = merkle_hellman_knapsack::decrypt(&encrypted, &private_key, a, n);
+    let encrypted = merkle_hellman_knapsack::encrypt(message, keys.public_key());
+    let decrypted =
+        merkle_hellman_knapsack::decrypt(&encrypted, keys.private_key(), keys.a(), keys.n());
 
     assert_eq!(decrypted, message);
 }
@@ -15,10 +16,11 @@ fn decrypt_word() {
 #[test]
 fn decrypt_phrase() {
     let message = "attack at dawn";
-    let (private_key, a, n, public_key) = keys::generate_keys(8);
+    let keys = keys::KeyPair::new(8);
 
-    let encrypted = merkle_hellman_knapsack::encrypt(message, &public_key);
-    let decrypted = merkle_hellman_knapsack::decrypt(&encrypted, &private_key, a, n);
+    let encrypted = merkle_hellman_knapsack::encrypt(message, keys.public_key());
+    let decrypted =
+        merkle_hellman_knapsack::decrypt(&encrypted, keys.private_key(), keys.a(), keys.n());
 
     assert_eq!(decrypted, message);
 }
@@ -26,10 +28,11 @@ fn decrypt_phrase() {
 #[test]
 fn decrypt_uppercase() {
     let message = "ATTACK AT DAWN";
-    let (private_key, a, n, public_key) = keys::generate_keys(8);
+    let keys = keys::KeyPair::new(8);
 
-    let encrypted = merkle_hellman_knapsack::encrypt(message, &public_key);
-    let decrypted = merkle_hellman_knapsack::decrypt(&encrypted, &private_key, a, n);
+    let encrypted = merkle_hellman_knapsack::encrypt(message, keys.public_key());
+    let decrypted =
+        merkle_hellman_knapsack::decrypt(&encrypted, keys.private_key(), keys.a(), keys.n());
 
     assert_eq!(decrypted, message);
 }

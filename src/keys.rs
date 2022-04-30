@@ -1,5 +1,72 @@
+use std::fmt;
+
 use crate::primes::is_prime;
 use rand::Rng;
+
+#[derive(Debug)]
+pub struct KeyPair {
+    private_key: Vec<u32>,
+    a: u32,
+    n: u32,
+    public_key: Vec<u32>,
+}
+
+impl fmt::Display for KeyPair {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "{}\n{}\n{}\n{}",
+            self.private_key
+                .iter()
+                .map(|x| x.to_string() + " ")
+                .collect::<String>(),
+            self.a,
+            self.n,
+            self.public_key
+                .iter()
+                .map(|x| x.to_string() + " ")
+                .collect::<String>(),
+        )
+    }
+}
+
+impl KeyPair {
+    pub fn new(length: usize) -> Self {
+        let (private_key, a, n) = generate_private_key(length);
+        let public_key = generate_public_key(&private_key, a, n);
+
+        Self {
+            private_key,
+            a,
+            n,
+            public_key,
+        }
+    }
+
+    /// Get a reference to the key pair's private key.
+    #[must_use]
+    pub fn private_key(&self) -> &[u32] {
+        self.private_key.as_ref()
+    }
+
+    /// Get the key pair's a.
+    #[must_use]
+    pub fn a(&self) -> u32 {
+        self.a
+    }
+
+    /// Get the key pair's n.
+    #[must_use]
+    pub fn n(&self) -> u32 {
+        self.n
+    }
+
+    /// Get a reference to the key pair's public key.
+    #[must_use]
+    pub fn public_key(&self) -> &[u32] {
+        self.public_key.as_ref()
+    }
+}
 
 fn is_superincreasing(sequence: &[u32]) -> bool {
     let mut sum = 0;
@@ -47,13 +114,6 @@ fn generate_public_key(private_key: &[u32], a: u32, n: u32) -> Vec<u32> {
     assert!(is_superincreasing(private_key));
 
     private_key.iter().map(|x| (x * a) % n).collect()
-}
-
-pub fn generate_keys(length: usize) -> (Vec<u32>, u32, u32, Vec<u32>) {
-    let (private_key, a, n) = generate_private_key(length);
-    let public_key = generate_public_key(&private_key, a, n);
-
-    (private_key, a, n, public_key)
 }
 
 #[cfg(test)]
