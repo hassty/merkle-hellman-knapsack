@@ -1,5 +1,3 @@
-use std::fmt;
-
 use crate::primes::is_prime;
 use rand::Rng;
 
@@ -9,25 +7,6 @@ pub struct KeyPair {
     a: u32,
     n: u32,
     public_key: Vec<u32>,
-}
-
-impl fmt::Display for KeyPair {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "{}\n{}\n{}\n{}",
-            self.private_key
-                .iter()
-                .map(|x| x.to_string() + " ")
-                .collect::<String>(),
-            self.a,
-            self.n,
-            self.public_key
-                .iter()
-                .map(|x| x.to_string() + " ")
-                .collect::<String>(),
-        )
-    }
 }
 
 impl KeyPair {
